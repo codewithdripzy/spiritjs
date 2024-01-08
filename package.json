@@ -1,0 +1,39 @@
+{
+  "name": "spiritjs",
+  "type": "module",
+  "version": "1.0.0",
+  "description": "Web development framework",
+  "main": "index.js",
+  "exports": {
+    "spirit": {
+      "import": "./index.js"
+    }
+  },
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "dev": "nodemon watch test/app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/codewithdripzy/spirit-js.git"
+  },
+  "keywords": [
+    "spirit",
+    "spiritjs",
+    "spirit-framework"
+  ],
+  "author": "transfo-global",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/codewithdripzy/spirit-js/issues"
+  },
+  "homepage": "https://github.com/codewithdripzy/spirit-js#readme",
+  "dependencies": {
+    "dotenv": "^16.3.1",
+    "fs": "^0.0.1-security",
+    "http": "^0.0.1-security"
+  }
+}
