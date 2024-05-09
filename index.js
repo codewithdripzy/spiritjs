@@ -1,5 +1,6 @@
 import { Server } from "./core/server.js";
 import { deprecatedTags, htmlTags, attributes, eventAttributes } from "./core/constants/tags.js";
+import Converter from "./core/utils/converter.js";
 
 class SpiritDOM {
     constructor() {}
@@ -7,11 +8,11 @@ class SpiritDOM {
     static render(data, language = "html") {
         const app = new Server();
 
-        this.generateComponent(data);
+        this.generateComponent(data, language);
         app.listen(33455);
     }
 
-    static generateComponent(component, language = "html") {
+    static generateComponent(component, language) {
         let code = "";
 
         try {
@@ -79,7 +80,7 @@ class SpiritDOM {
             if (component.class && attributes.includes('class')) {
                 html += `class="${component.class}" `;
             }
-            
+
             if (component.id && attributes.includes('id')) {
                 html += `id="${component.id}" `;
             }
@@ -117,8 +118,34 @@ class SpiritDOM {
             }
 
             code += `<${component.tag} `;
+            
+            for (const key in component) {
+                if (component.hasOwnProperty(key)) {
+                    if (key !== 'tag' && key !== 'class' && key !== 'id' && attributes.includes(key)) {
+                        code += `${Converter.toCamelCase(key)}="${component[key]}" `;
+                    }
+                }
+            }
 
-            // check if the component has a class
+            if (component.class) {
+                code += `className="${component.class}" `;
+            }
+
+            if (component.id) {
+                code += `id="${component.id}" `;
+            }
+
+            code += '>';
+
+            if (component.children && component.children.length > 0) {
+                component.children.forEach(child => {
+                    code += this.renderJSX(child);
+                });
+            }
+
+            code += `</${component.tag}>`;
+
+            return code;
         } catch (error) {
             console.error(error);
         }
