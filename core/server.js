@@ -1,7 +1,6 @@
-import dotenv from "dotenv";
 import fs from 'fs';
+import dotenv from "dotenv";
 import path, { dirname } from 'path';
-import { fileURLToPath } from "url";
 import http  from 'http';
 
 class Server{
@@ -11,8 +10,8 @@ class Server{
     constructor(port) {
         try {
             dotenv.config();
-
             this.port = process.env.PORT || port;
+
             this.server = http.createServer((req, res) => {
                 const endpoint = req.url;
 
@@ -25,8 +24,8 @@ class Server{
                     fileStream.pipe(res);
                 }else{
                     const fileEndpoint = dirname(req.url);
-
                     const extname = path.extname(req.url);
+                    
                     let contentType = "text/html";
 
                     switch (extname) {
@@ -36,12 +35,15 @@ class Server{
                         case '.js':
                             contentType = 'application/javascript';
                             break;
+                        case '.ico':
+                            contentType = 'image/x-icon';
+                            break;
                     }
 
                     res.writeHead(200, { 'Content-Type': contentType });
-
+                    
                     if(fileEndpoint == "/"){
-                        const libFilePath = path.join(new URL('../public', import.meta.url).pathname, req.url.substring(1, req.url.length));
+                        const libFilePath = path.join(new URL('../', import.meta.url).pathname, req.url.substring(1, req.url.length));
                         const libFileStream = fs.createReadStream(libFilePath);
                         
                         libFileStream.pipe(res);
@@ -64,7 +66,7 @@ class Server{
 
 
     listen(){
-        this.server.listen(this.port, (err, result) => {
+        this.server.listen(this.port, () => {
             console.log(`Running on http://localhost:${this.port}`);
         });
     }
