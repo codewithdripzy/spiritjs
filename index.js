@@ -8,7 +8,9 @@ class SpiritDOM {
     static render(data, language = "html") {
         const app = new Server();
 
-        this.generateComponent(data, language);
+        let code = this.generateComponent(data, language);
+        
+        app.setCode(code);        
         app.listen(33455);
     }
 
@@ -37,10 +39,10 @@ class SpiritDOM {
                 code = this.renderJSX(component);
             }
 
-            console.log(code);
+            return code;
         } catch (error) {
             console.error(error);
-            throw Error(error);
+            return code;
         }
     }
 

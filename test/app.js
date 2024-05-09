@@ -40,4 +40,4 @@ export const nav = {
     ]
 }
 
-SpiritDOM.render(nav, "jsx");
+SpiritDOM.render(nav, "html");

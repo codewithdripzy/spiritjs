@@ -64,6 +64,15 @@ class Server{
         }
     }
 
+    setCode(code){
+        return this.server.on('request', (req, res) => {
+            res.statusCode = 200;
+            res.setHeader('Content-Type', 'text/html');
+            
+            return res.end(code);
+        });
+    }
+
 
     listen(){
         this.server.listen(this.port, () => {
